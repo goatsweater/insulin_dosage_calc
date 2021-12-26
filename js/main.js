@@ -114,16 +114,39 @@ function calculateTotalCarbs() {
 
     itemList.forEach(element => {
         let grams = element.getElementsByTagName("span")[0].textContent.split(' ')[0];
-        console.log(grams);
+        console.log("Item grams: %s", grams);
         totalCarbs = totalCarbs + Number(grams);
     });
+    console.log("Total carbs: %s", totalCarbs);
 
     const totalCarbElem = document.getElementById("mealcarbtotal");
     totalCarbElem.textContent = totalCarbs;
 }
 
 
+function calculateDosageRatio() {
+    const totalCarbElem = document.getElementById("mealcarbtotal");
+    let totalCarbs = Number(totalCarbElem.textContent);
+    console.log("Total carbs: %d", totalCarbs)
+
+    const ratioValueElem = document.getElementById("ratiovalue");
+    let ratioValue = ratioValueElem.valueAsNumber;
+    console.log("Ration value: %d", ratioValue)
+
+    let ratioedCarbs = totalCarbs / ratioValue;
+    console.log("Final carb value: %s", ratioedCarbs);
+
+    const scaledCarbsElem = document.getElementById("dosagetotal");
+    scaledCarbsElem.textContent = ratioedCarbs;
+}
+
+
+// Add event listeners to buttons.
 let newFoodItemButton = document.getElementById('addfooditem');
 newFoodItemButton.addEventListener('click', createFoodItem);
+
 let calcTotalCarbsButton = document.getElementById('calccarbtotal');
 calcTotalCarbsButton.addEventListener('click', calculateTotalCarbs);
+
+let calcCarbRatioButton = document.getElementById('calcdosageratio');
+calcCarbRatioButton.addEventListener('click', calculateDosageRatio);

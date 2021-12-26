@@ -20,7 +20,7 @@
             <div class="col-sm">
                 <div class="card">
                     <div class="card-body">
-                        <h5 class="card-title">Meal Carbs (g)</h5>
+                        <h5 class="card-title">Meal Carbs <small>(g)</small></h5>
                         <p class="card-text" id="mealcarbtotal">0</p>
                     </div>
                 </div>
@@ -28,8 +28,8 @@
             <div class="col-sm">
                 <div class="card">
                     <div class="card-body">
-                        <h5 class="card-title">Dosage</h5>
-                        <p class="card-text" id="dosagetotal">carbs / ratio</p>
+                        <h5 class="card-title">Dosage ratio <small>(carbs / ratio)</h5>
+                        <p class="card-text" id="dosagetotal"></p>
                     </div>
                 </div>
             </div>
@@ -49,8 +49,20 @@
                 </form>
             </div>
             <div class="col-sm ">
-                <h2>Dosage calculation</h2>
-                <p>not yet implemented...</p>
+                <h2>Dosage ratio calculation</h2>
+                <form id="dosagecalculator">
+                    <label for="ratiovalue" class="form-label">Ratio</label>
+                    <div class="input-group">
+                        <span class="input-group-text" id="ratiostarter">1:</span>
+                        <input type="number" class="form-control" id="ratiovalue">
+                    </div>
+
+<!--
+                    <label for="bloodglucose" class="form-label">Blood glucose</label>
+                    <input type="number" class="form-control" id="bloodglucose" placeholder="mmol/L">
+-->
+                    <button type="button" class="button btn-primary" id="calcdosageratio">Calculate dosage ratio</button>
+                </form>
             </div>
         </div>
     </div>
