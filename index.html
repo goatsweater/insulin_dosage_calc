@@ -13,22 +13,33 @@
 </head>
 
 <body>
-    <h1>Insulin Calculator</h1>
+    <div class="container">
+        <header class="d-flex flex-wrap justify-content-center py-3 mb-4 border-bottom">
+            <a href="/" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-dark text-decoration-none">
+            <span class="fs-4">Insulin Calculator</span>
+            </a>
+
+            <ul class="nav nav-pills">
+            <li class="nav-item"><a href="/index.html" class="nav-link active" aria-current="page">Home</a></li>
+            <!--<li class="nav-item"><a href="/settings.html" class="nav-link">Settings</a></li>-->
+            </ul>
+        </header>
+    </div>
 
     <div class="container">
         <div class="row">
-            <div class="col-sm">
+            <div class="col">
                 <div class="card">
                     <div class="card-body">
-                        <h5 class="card-title">Meal Carbs <small>(g)</small></h5>
+                        <h5 class="card-title">Meal Carbs <small class="text-muted">(g)</small></h5>
                         <p class="card-text" id="mealcarbtotal">0</p>
                     </div>
                 </div>
             </div>
-            <div class="col-sm">
+            <div class="col">
                 <div class="card">
                     <div class="card-body">
-                        <h5 class="card-title">Dosage ratio <small>(carbs / ratio)</h5>
+                        <h5 class="card-title">Dosage ratio <small class="text-muted">(carbs / ratio)</small></h5>
                         <p class="card-text" id="dosagetotal"></p>
                     </div>
                 </div>
@@ -38,9 +49,9 @@
 
 
     <div class="container">
-        <div class="row">
-            <div class="col-sm">
-                <h2>Carb counts</h2>
+        <div class="row gap-3">
+            <div class="col-sm bg-light border rounded-3">
+                <h4>Carb counts</h4>
                 <button type="button" class="button btn-primary" id="addfooditem">Add Item</button>
                 <button type="button" class="button btn-secondary" id="calccarbtotal">Get carb total</button>
                 <form id="carbcalculator">
@@ -48,8 +59,8 @@
                     </div>
                 </form>
             </div>
-            <div class="col-sm ">
-                <h2>Dosage ratio calculation</h2>
+            <div class="col-sm bg-light border rounded-3">
+                <h4>Dosage ratio calculation</h4>
                 <form id="dosagecalculator">
                     <label for="ratiovalue" class="form-label">Ratio</label>
                     <div class="input-group">
