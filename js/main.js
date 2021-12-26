@@ -35,18 +35,18 @@ function createFoodItem() {
     item.appendChild(itemContent);
 
     // Add form elements to the body
-    const itemLabelElem = createInputElement("Item Label", "Label", ("label" + newItemElemId), "text");
-    const pkgServingElem = createInputElement("Package Serving Size", "0.75", ("pkgserving" + newItemElemId), "number");
-    const pkgCarbsElem = createInputElement("Package Carbohydrates", "23", ("pkgcarbs" + newItemElemId), "number");
-    const pkgFibreElem = createInputElement("Package Fibre", "2", ("pkgfibre" + newItemElemId), "number");
-    const persServingElem = createInputElement("Your serving size", "1.5", ("persserving" + newItemElemId), "number");
+    const itemLabelElem = createInputElement("Item", "Label", ("label" + newItemElemId), controlType = "text");
+    const pkgServingElem = createInputElement("Pkg serving", "0.75", ("pkgserving" + newItemElemId), controlType = "number");
+    const pkgCarbsElem = createInputElement("Pkg carbs", "23", ("pkgcarbs" + newItemElemId), controlType = "number", suffix = "g");
+    const pkgFibreElem = createInputElement("Pkg fibre", "2", ("pkgfibre" + newItemElemId), controlType = "number", suffix = "g");
+    const persServingElem = createInputElement("Your serving", "1.5", ("persserving" + newItemElemId), controlType = "number");
     itemBody.appendChild(itemLabelElem);
     itemBody.appendChild(pkgServingElem);
     itemBody.appendChild(pkgCarbsElem);
     itemBody.appendChild(pkgFibreElem);
     itemBody.appendChild(persServingElem);
 
-    const calcButton = createButton("Calculate", ("btn" + newItemElemId));
+    const calcButton = createButton("Calculate item", ("btn" + newItemElemId));
     itemBody.appendChild(calcButton);
     calcButton.addEventListener('click', function() {
         headerButton.textContent = itemLabelElem.getElementsByTagName("input")[0].value;
@@ -74,17 +74,26 @@ function createFoodItem() {
     carbcalcAccordion.appendChild(item);
 }
 
-function createInputElement(labelString, placeholderText, idValue, controlType = "number") {
+function createInputElement(labelString, placeholderText, idValue, controlType = "number", suffix = "") {
     // Container div
     const inputContainer = document.createElement("div");
-    inputContainer.className = "mb-3";
+    inputContainer.className = "row mb-3";
 
     // label
     const inputLabel = document.createElement("label");
-    inputLabel.className = "form-label";
+    inputLabel.className = "form-label col-form-label col-sm-6";
     inputLabel.setAttribute("for", idValue);
     inputLabel.textContent = labelString;
 
+    // input div wrapper
+    const inputDiv = document.createElement("div");
+    inputDiv.className = "col-sm-6";
+    // input group for suffix
+    const inputGroup = document.createElement("div");
+    inputGroup.className = "input-group";
+    const inputGroupSuffix = document.createElement("span");
+    inputGroupSuffix.className = "input-group-text";
+    inputGroupSuffix.textContent = suffix;
     // input
     const inputControl = document.createElement("input");
     inputControl.type = controlType;
@@ -93,7 +102,14 @@ function createInputElement(labelString, placeholderText, idValue, controlType =
     inputControl.placeholder = placeholderText;
 
     inputContainer.appendChild(inputLabel);
-    inputContainer.appendChild(inputControl);
+    if (suffix == "") {
+        inputDiv.appendChild(inputControl);
+    } else {
+        inputGroup.appendChild(inputControl);
+        inputGroup.appendChild(inputGroupSuffix);
+        inputDiv.appendChild(inputGroup);
+    }
+    inputContainer.appendChild(inputDiv);
 
     return inputContainer;
 }
