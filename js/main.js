@@ -65,7 +65,7 @@ function createFoodItem() {
 
         // Item carbs total grams
         const headerBadge = document.createElement("span");
-        headerBadge.className = "badge bg-secondary";
+        headerBadge.className = "badge bg-secondary mx-3";
         headerBadge.textContent = totalCarbs.toString() + " g";
         headerButton.appendChild(headerBadge);
     });
