@@ -151,7 +151,7 @@ function calculateTotalCarbs() {
     console.log("Total carbs: %s", totalCarbs);
 
     const totalCarbElem = document.getElementById("mealcarbtotal");
-    totalCarbElem.textContent = totalCarbs;
+    totalCarbElem.textContent = totalCarbs.toFixed(3);
 }
 
 
@@ -172,7 +172,7 @@ function calculateDosageRatio() {
     console.log("Final carb value: %s", ratioedCarbs);
 
     const scaledCarbsElem = document.getElementById("dosagetotal");
-    scaledCarbsElem.textContent = ratioedCarbs;
+    scaledCarbsElem.textContent = ratioedCarbs.toFixed(3);
 }
 
 
@@ -184,7 +184,7 @@ function calculateCorrectionFactor() {
     let correctionDose = bloodGlucose - correction;
 
     const correctionTotalElem = document.getElementById('correctiontotal');
-    correctionTotalElem.textContent = correctionDose;
+    correctionTotalElem.textContent = correctionDose.toFixed(3);
 }
 
 
