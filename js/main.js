@@ -34,40 +34,54 @@ function createFoodItem() {
     itemContent.appendChild(itemBody);
     item.appendChild(itemContent);
 
+    // Create a form for the new food item
+    const newFoodItemFormElem = document.createElement("form");
+    newFoodItemFormElem.action = "#";
+    itemBody.appendChild(newFoodItemFormElem);
+
     // Add form elements to the body
     const itemLabelElem = createInputElement("Item", "Label", ("label" + newItemElemId), controlType = "text");
     const pkgServingElem = createInputElement("Pkg serving", "0.75", ("pkgserving" + newItemElemId), controlType = "number");
     const pkgCarbsElem = createInputElement("Pkg carbs", "23", ("pkgcarbs" + newItemElemId), controlType = "number", suffix = "g");
     const pkgFibreElem = createInputElement("Pkg fibre", "2", ("pkgfibre" + newItemElemId), controlType = "number", suffix = "g");
     const persServingElem = createInputElement("Your serving", "1.5", ("persserving" + newItemElemId), controlType = "number");
-    itemBody.appendChild(itemLabelElem);
-    itemBody.appendChild(pkgServingElem);
-    itemBody.appendChild(pkgCarbsElem);
-    itemBody.appendChild(pkgFibreElem);
-    itemBody.appendChild(persServingElem);
+    newFoodItemFormElem.appendChild(itemLabelElem);
+    newFoodItemFormElem.appendChild(pkgServingElem);
+    newFoodItemFormElem.appendChild(pkgCarbsElem);
+    newFoodItemFormElem.appendChild(pkgFibreElem);
+    newFoodItemFormElem.appendChild(persServingElem);
 
     const calcButton = createButton("Calculate item", ("btn" + newItemElemId));
-    itemBody.appendChild(calcButton);
-    calcButton.addEventListener('click', function() {
-        headerButton.textContent = itemLabelElem.getElementsByTagName("input")[0].value;
+    newFoodItemFormElem.appendChild(calcButton);
 
-        let carbs = pkgCarbsElem.getElementsByTagName("input")[0].valueAsNumber;
-        console.log("carbs: " + carbs);
-        let fibre = pkgFibreElem.getElementsByTagName("input")[0].valueAsNumber;
-        console.log("fibre: " + fibre);
-        let servingSize = pkgServingElem.getElementsByTagName("input")[0].valueAsNumber;
-        console.log("serving: " + servingSize);
-        let portionSize = persServingElem.getElementsByTagName("input")[0].valueAsNumber;
-        console.log("portion: " + portionSize);
+    // List for item form submission and process the form
+    newFoodItemFormElem.addEventListener('submit', function(event) {
+        // Make sure everything is valid before trying to calculate anything
+        if (!newFoodItemFormElem.checkValidity()) {
+            console.log("Incomplete form. Processing stopped.");
+            event.preventDefault();
+            event.stopPropagation();
+        } else {
+            headerButton.textContent = itemLabelElem.getElementsByTagName("input")[0].value;
 
-        let totalCarbs = (((carbs - fibre) / servingSize) * portionSize);
-        console.log("total: " + totalCarbs);
+            let carbs = pkgCarbsElem.getElementsByTagName("input")[0].valueAsNumber;
+            console.log("carbs: " + carbs);
+            let fibre = pkgFibreElem.getElementsByTagName("input")[0].valueAsNumber;
+            console.log("fibre: " + fibre);
+            let servingSize = pkgServingElem.getElementsByTagName("input")[0].valueAsNumber;
+            console.log("serving: " + servingSize);
+            let portionSize = persServingElem.getElementsByTagName("input")[0].valueAsNumber;
+            console.log("portion: " + portionSize);
 
-        // Item carbs total grams
-        const headerBadge = document.createElement("span");
-        headerBadge.className = "badge bg-secondary mx-3";
-        headerBadge.textContent = totalCarbs.toString() + " g";
-        headerButton.appendChild(headerBadge);
+            let totalCarbs = (((carbs - fibre) / servingSize) * portionSize);
+            console.log("total: " + totalCarbs);
+
+            // Item carbs total grams
+            const headerBadge = document.createElement("span");
+            headerBadge.className = "badge bg-secondary mx-3";
+            headerBadge.textContent = totalCarbs.toString() + " g";
+            headerButton.appendChild(headerBadge);
+        }
     });
 
     // Add the item to the page
@@ -117,7 +131,7 @@ function createInputElement(labelString, placeholderText, idValue, controlType =
 
 function createButton(labelString, idValue) {
     const button = document.createElement("button");
-    button.type = "button";
+    button.type = "submit";
     button.textContent = labelString;
     button.className = "btn btn-primary";
     button.id = idValue;
