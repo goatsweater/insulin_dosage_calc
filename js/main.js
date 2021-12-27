@@ -25,7 +25,8 @@ function createFoodItem() {
 
     // Accordion contents
     const itemContent = document.createElement("div");
-    itemContent.className = "accordion-collapse collapse show";
+    itemContent.className = "accordion-collapse collapse";
+    itemContent.setAttribute('data-bs-parent', '#carbcalc');
     itemContent.id = "collapse" + newItemId;
     // Accordion body
     const itemBody = document.createElement("div");
@@ -81,11 +82,17 @@ function createFoodItem() {
             headerBadge.className = "badge bg-secondary mx-3";
             headerBadge.textContent = totalCarbs.toString() + " g";
             headerButton.appendChild(headerBadge);
+
+            // Close the accordion for the user
+            let bsCollapse = new bootstrap.Collapse(itemContent, { hide: true });
         }
     });
 
     // Add the item to the page
     carbcalcAccordion.appendChild(item);
+
+    // Show the element, hiding all others
+    let bsCollapse = new bootstrap.Collapse(itemContent, { toggle: true });
 }
 
 function createInputElement(labelString, placeholderText, idValue, controlType = "number", suffix = "") {
