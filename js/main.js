@@ -149,7 +149,11 @@ function calculateDosageRatio() {
     let ratioValue = Number(ratioValueElem.options[ratioValueElem.options.selectedIndex].value)
     console.log("Ratio value: %d", ratioValue)
 
-    let ratioedCarbs = totalCarbs / ratioValue;
+    // Protect against div by 0 errors
+    let ratioedCarbs = 0;
+    if (ratioValue > 0) {
+        ratioedCarbs = totalCarbs / ratioValue;
+    }
     console.log("Final carb value: %s", ratioedCarbs);
 
     const scaledCarbsElem = document.getElementById("dosagetotal");
