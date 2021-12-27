@@ -39,6 +39,26 @@
                     </div>
                 </div>
             </div>
+            <div class="col">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Correction</h5>
+                        <p class="card-text" id="correctiontotal">0</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Notes</h5>
+                        <p class="card-text" id="eventnote">
+                            (B=...)+(C=...)=...<br>
+                            Basaglar=...<br>
+                            TMC=.../...
+                        </p>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 
@@ -71,12 +91,6 @@
                             </select>
                         </div>
                     </div>
-
-<!--
-                    <label for="bloodglucose" class="form-label">Blood glucose</label>
-                    <input type="number" class="form-control" id="bloodglucose" placeholder="mmol/L">
--->
-                    
                 </form>
                 <!-- Modal window for adding meals -->
                 <div class="modal fade" id="addMealModal" tabindex="-1" aria-labelledby="addMealModalLabel" aria-hidden="true">
@@ -107,7 +121,55 @@
                         </div>
                     </div>
                     </div>
-  </div>
+                </div>
+                <h4>Correction factor</h4>
+                <div class="btn-group" role="group" aria-label="Correction factor controls">
+                    <button type="button" class="btn btn-primary" id="calccorrfactor">Calculate correction</button>
+                    <button type="button" class="btn btn-secondary" id="addcorrfactor" data-bs-toggle="modal" data-bs-target="#addCorrectionFactorModal">Add correction formula</button>
+                </div>
+                <form id="correctioncalculation">
+                    <div class="row my-3">
+                        <label for="glucosereading" class="form-label col-form-label col-sm-4">Blood Glucose</label>
+                        <div class="col-sm-8">
+                            <div class="input-group">
+                                <input type="number" class="form-control" placeholder="9.8" id="glucosereading">
+                                <span class="input-group-text">mmol/L</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row mb-2">
+                        <label for="correctionselector" class="form-label col-form-label col-sm-4">Formula</label>
+                        <div class-"col-sm-8">
+                            <select class="form-select" aria-label="Correction factor selection" id="correctionselector">
+                                <option value="0">No corrections available</option>
+                            </select>
+                        </div>
+                    </div>
+                </form>
+                <!-- Modal window for correction factors -->
+                <div class="modal fade" id="addCorrectionFactorModal" tabindex="-1" aria-labelledby="addMealModalLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="addMealModalLabel">Add correction factor</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <form id="addmeal">
+                                <label for="formulaName" class="form-label">Label</label>
+                                <input type="text" class="form-control" placeholder="Home" id="formulaName">
+                                <label for="targetGlucose" class="form-label">Target glucose</label>
+                                <input type="number" class="form-control" placeholder="8" id="targetGlucose" required>
+                                <label for="corrFactorValue" class="form-label">Correction factor</label>
+                                <input type="number" class="form-control" placeholder="5" id="corrFactorValue" required>
+                            </form>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-primary" id="corrfactorbutton" data-bs-dismiss="modal">Save &amp; Close</button>
+                        </div>
+                    </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>

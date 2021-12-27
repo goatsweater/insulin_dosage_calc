@@ -100,6 +100,7 @@ function createInputElement(labelString, placeholderText, idValue, controlType =
     inputControl.className = "form-control";
     inputControl.id = idValue;
     inputControl.placeholder = placeholderText;
+    inputControl.required = true;
 
     inputContainer.appendChild(inputLabel);
     if (suffix == "") {
@@ -146,7 +147,7 @@ function calculateDosageRatio() {
     console.log("Total carbs: %d", totalCarbs)
 
     const ratioValueElem = document.getElementById("mealselector");
-    let ratioValue = Number(ratioValueElem.options[ratioValueElem.options.selectedIndex].value)
+    let ratioValue = Number(ratioValueElem.options[ratioValueElem.options.selectedIndex].value);
     console.log("Ratio value: %d", ratioValue)
 
     // Protect against div by 0 errors
@@ -158,6 +159,18 @@ function calculateDosageRatio() {
 
     const scaledCarbsElem = document.getElementById("dosagetotal");
     scaledCarbsElem.textContent = ratioedCarbs;
+}
+
+
+function calculateCorrectionFactor() {
+    const bloodGlucose = document.getElementById('glucosereading').valueAsNumber;
+    const correctionElem = document.getElementById('correctionselector');
+    let correction = Number(correctionElem.options[correctionElem.options.selectedIndex].value);
+
+    let correctionDose = bloodGlucose - correction;
+
+    const correctionTotalElem = document.getElementById('correctiontotal');
+    correctionTotalElem.textContent = correctionDose;
 }
 
 
@@ -177,6 +190,23 @@ function loadMealSelection() {
         mealSelectionElem.add(mealOption);
     });
 
+}
+
+function loadCorrectionSelection() {
+    let corrections = JSON.parse(localStorage.getItem('corrections'));
+    // Exit if nothing to do
+    if (corrections == null) { return; }
+
+    // Load the list from previously saved correction factors
+    const correctionSelectionElem = document.getElementById('correctionselector');
+    correctionSelectionElem.remove(0);
+
+    corrections.forEach(correction => {
+        let correctionOption = document.createElement("option");
+        correctionOption.text = `${correction.name} [BG - (${correction.target} / ${correction.factor})]`;
+        correctionOption.value = correction.result;
+        correctionSelectionElem.add(correctionOption);
+    });
 }
 
 
@@ -202,6 +232,31 @@ function saveNewMeal() {
     loadMealSelection();
 }
 
+function saveNewCorrectionFactor() {
+    let corrections = JSON.parse(localStorage.getItem('corrections'));
+
+    if (corrections == null) {
+        corrections = [];
+    }
+
+    let target = document.getElementById('targetGlucose').valueAsNumber;
+    let factor = document.getElementById('corrFactorValue').valueAsNumber;
+    let correction = {
+        "name": document.getElementById('formulaName').value,
+        "target": target,
+        "factor": factor,
+        "result": target / factor
+    };
+    console.log("Correction factor: %s", JSON.stringify(correction));
+    corrections.push(correction);
+
+    // Save the corrections for future sessions
+    localStorage.setItem('corrections', JSON.stringify(corrections));
+
+    // Reload the selection menu
+    loadCorrectionSelection();
+}
+
 
 // Add event listeners to buttons.
 let newFoodItemButton = document.getElementById('addfooditem');
@@ -213,6 +268,13 @@ calcTotalCarbsButton.addEventListener('click', calculateTotalCarbs);
 let calcCarbRatioButton = document.getElementById('calcdosageratio');
 calcCarbRatioButton.addEventListener('click', calculateDosageRatio);
 
+let calcCorrFactorButton = document.getElementById('calccorrfactor');
+calcCorrFactorButton.addEventListener('click', calculateCorrectionFactor);
+
+let newCorrFactorButton = document.getElementById('corrfactorbutton');
+newCorrFactorButton.addEventListener('click', saveNewCorrectionFactor);
+
 let mealSaveButton = document.getElementById('savemealbutton');
 mealSaveButton.addEventListener('click', saveNewMeal);
 window.addEventListener('load', loadMealSelection);
+window.addEventListener('load', loadCorrectionSelection);
