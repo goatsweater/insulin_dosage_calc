@@ -85,6 +85,9 @@ function createFoodItem() {
 
             // Close the accordion for the user
             let bsCollapse = new bootstrap.Collapse(itemContent, { hide: true });
+
+            // Calculate the total carbs for the meal
+            calculateTotalCarbs();
         }
     });
 
@@ -148,12 +151,15 @@ function createButton(labelString, idValue) {
 
 function calculateTotalCarbs() {
     let totalCarbs = 0;
-    const itemList = Array.from(document.getElementById("carbcalc").children);
+    const itemList = document.getElementById("carbcalc").getElementsByTagName("h2");
 
-    itemList.forEach(element => {
-        let grams = element.getElementsByTagName("span")[0].textContent.split(' ')[0];
-        console.log("Item grams: %s", grams);
-        totalCarbs = totalCarbs + Number(grams);
+    Array.from(itemList).forEach(function(headerElem) {
+        let gramsLabels = headerElem.getElementsByTagName("span")
+        Array.from(gramsLabels).forEach(function(label) {
+            let grams = label.textContent.split(' ')[0];
+            console.log("Item grams: %s", grams);
+            totalCarbs = totalCarbs + Number(grams);
+        });
     });
     console.log("Total carbs: %s", totalCarbs);
 
@@ -282,9 +288,6 @@ function saveNewCorrectionFactor() {
 // Add event listeners to buttons.
 let newFoodItemButton = document.getElementById('addfooditem');
 newFoodItemButton.addEventListener('click', createFoodItem);
-
-let calcTotalCarbsButton = document.getElementById('calccarbtotal');
-calcTotalCarbsButton.addEventListener('click', calculateTotalCarbs);
 
 let calcCarbRatioButton = document.getElementById('calcdosageratio');
 calcCarbRatioButton.addEventListener('click', calculateDosageRatio);
