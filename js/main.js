@@ -173,19 +173,22 @@ function calculateDosageRatio() {
     let totalCarbs = Number(totalCarbElem.textContent);
     console.log("Total carbs: %d", totalCarbs)
 
+    // Meal information
+    let meals = JSON.parse(localStorage.getItem("meals"));
     const ratioValueElem = document.getElementById("mealselector");
-    let ratioValue = Number(ratioValueElem.options[ratioValueElem.options.selectedIndex].value);
-    console.log("Ratio value: %d", ratioValue)
+    let mealInfo = meals[ratioValueElem.options.selectedIndex];
+    console.log("Ratio value: %d", mealInfo.ratio)
 
     // Protect against div by 0 errors
     let ratioedCarbs = 0;
-    if (ratioValue > 0) {
-        ratioedCarbs = totalCarbs / ratioValue;
+    if (mealInfo.ratio > 0) {
+        ratioedCarbs = totalCarbs / mealInfo.ratio;
     }
     console.log("Final carb value: %s", ratioedCarbs);
 
+    // Put the result on screen
     const scaledCarbsElem = document.getElementById("dosagetotal");
-    scaledCarbsElem.textContent = ratioedCarbs.toFixed(3);
+    scaledCarbsElem.textContent = `${ratioedCarbs.toFixed(3)} + ${mealInfo.longlast}`;
 }
 
 
@@ -212,8 +215,8 @@ function loadMealSelection() {
 
     meals.forEach(meal => {
         let mealOption = document.createElement("option");
-        mealOption.text = meal.name + " (1:" + meal.ratio + ")";
-        mealOption.value = meal.ratio;
+        mealOption.text = `${meal.name} (1: ${meal.ratio}) + ${meal.longlast}`;
+        mealOption.value = meals.indexOf(meal);
         mealSelectionElem.add(mealOption);
     });
 
@@ -230,7 +233,7 @@ function loadCorrectionSelection() {
 
     corrections.forEach(correction => {
         let correctionOption = document.createElement("option");
-        correctionOption.text = `${correction.name} [BG - (${correction.target} / ${correction.factor})]`;
+        correctionOption.text = `${ correction.name }[BG - (${ correction.target } / ${correction.factor})]`;
         correctionOption.value = correction.result;
         correctionSelectionElem.add(correctionOption);
     });
@@ -246,7 +249,8 @@ function saveNewMeal() {
 
     let meal = {
         "name": document.getElementById("mealname").value,
-        "ratio": document.getElementById("mealratio").valueAsNumber
+        "ratio": document.getElementById("mealratio").valueAsNumber,
+        "longlast": document.getElementById("longlastingunits").valueAsNumber
     };
 
     console.log("Saving meal: %s", JSON.stringify(meal));
