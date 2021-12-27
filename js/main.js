@@ -145,15 +145,57 @@ function calculateDosageRatio() {
     let totalCarbs = Number(totalCarbElem.textContent);
     console.log("Total carbs: %d", totalCarbs)
 
-    const ratioValueElem = document.getElementById("ratiovalue");
-    let ratioValue = ratioValueElem.valueAsNumber;
-    console.log("Ration value: %d", ratioValue)
+    const ratioValueElem = document.getElementById("mealselector");
+    let ratioValue = Number(ratioValueElem.options[ratioValueElem.options.selectedIndex].value)
+    console.log("Ratio value: %d", ratioValue)
 
     let ratioedCarbs = totalCarbs / ratioValue;
     console.log("Final carb value: %s", ratioedCarbs);
 
     const scaledCarbsElem = document.getElementById("dosagetotal");
     scaledCarbsElem.textContent = ratioedCarbs;
+}
+
+
+function loadMealSelection() {
+    let meals = JSON.parse(localStorage.getItem('meals'));
+    // Exit if there is nothing to do
+    if (meals == null) { return; }
+
+    // Load the list of meals from previously saved meals
+    const mealSelectionElem = document.getElementById('mealselector');
+    mealSelectionElem.remove(0);
+
+    meals.forEach(meal => {
+        let mealOption = document.createElement("option");
+        mealOption.text = meal.name + " (1:" + meal.ratio + ")";
+        mealOption.value = meal.ratio;
+        mealSelectionElem.add(mealOption);
+    });
+
+}
+
+
+function saveNewMeal() {
+    let meals = JSON.parse(localStorage.getItem('meals'));
+
+    if (meals == null) {
+        meals = [];
+    }
+
+    let meal = {
+        "name": document.getElementById("mealname").value,
+        "ratio": document.getElementById("mealratio").valueAsNumber
+    };
+
+    console.log("Saving meal: %s", JSON.stringify(meal));
+    meals.push(meal);
+
+    // Save the meals for future sessions
+    localStorage.setItem('meals', JSON.stringify(meals));
+
+    // Reload the selection menu
+    loadMealSelection();
 }
 
 
@@ -166,3 +208,7 @@ calcTotalCarbsButton.addEventListener('click', calculateTotalCarbs);
 
 let calcCarbRatioButton = document.getElementById('calcdosageratio');
 calcCarbRatioButton.addEventListener('click', calculateDosageRatio);
+
+let mealSaveButton = document.getElementById('savemealbutton');
+mealSaveButton.addEventListener('click', saveNewMeal);
+window.addEventListener('load', loadMealSelection);

@@ -63,23 +63,56 @@
             </div>
             <div class="col-sm bg-light border rounded-3">
                 <h4>Dosage ratio calculation</h4>
+                <div class="btn-group" role="group" aria-label="Dosage ratio calculator controls">
+                    <button type="button" class="btn btn-primary" id="calcdosageratio">Calculate dosage ratio</button>
+                    <button type="button" class="btn btn-secondary" id="addmeal" data-bs-toggle="modal" data-bs-target="#addMealModal">Add meal</button>
+                </div>
                 <form id="dosagecalculator">
                     <div class="row mb-2">
-                        <label for="ratiovalue" class="form-label col-form-label col-sm-4">Ratio</label>
-                        <div class="col-sm-8">
-                            <div class="input-group">
-                                <span class="input-group-text" id="ratiostarter">1:</span>
-                                <input type="number" class="form-control" id="ratiovalue">
-                            </div>
-                    </div>
+                        <label for="mealselector" class="form-label col-form-label col-sm-4">Meal</label>
+                        <div class-"col-sm-8">
+                            <select class="form-select" aria-label="Meal selection" id="mealselector">
+                                <option value="0">No meals available</option>
+                            </select>
+                        </div>
                     </div>
 
 <!--
                     <label for="bloodglucose" class="form-label">Blood glucose</label>
                     <input type="number" class="form-control" id="bloodglucose" placeholder="mmol/L">
 -->
-                    <button type="button" class="btn btn-primary" id="calcdosageratio">Calculate dosage ratio</button>
+                    
                 </form>
+                <!-- Modal window for adding meals -->
+                <div class="modal fade" id="addMealModal" tabindex="-1" aria-labelledby="addMealModalLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="addMealModalLabel">Add meal</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <form id="addmeal">
+                                <label for="mealName" class="form-label">Meal name</label>
+                                <input type="text" class="form-control" placeholder="Dinner" id="mealname">
+                                <label for="mealRatioValue" class="form-label">Meal ratio</label>
+                                <div class="input-group">
+                                    <span class="input-group-text">1:</span>
+                                    <input type="number" class="form-control" placeholder="10" id="mealratio">
+                                </div>
+                                <label for="longlastingdose" class="form-label">Long lasting dose for meal <small>(leave blank for none)</small></label>
+                                <div class="input-group">
+                                    <input type="number" class="form-control" placeholder="4" id="longlastingunits">
+                                    <span class="input-group-text">units</span>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-primary" id="savemealbutton" data-bs-dismiss="modal">Save &amp; Close</button>
+                        </div>
+                    </div>
+                    </div>
+  </div>
             </div>
         </div>
     </div>
