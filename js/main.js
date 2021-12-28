@@ -197,13 +197,21 @@ function calculateDosageRatio() {
 
 function calculateCorrectionFactor() {
     let corrections = JSON.parse(localStorage.getItem('corrections'));
+    const correctionTotalElem = document.getElementById('correctiontotal');
+
     const bloodGlucose = document.getElementById('glucosereading').valueAsNumber;
+    console.log("Blood glucose: %d", bloodGlucose);
+
+    if (isNaN(bloodGlucose)) {
+        correctionTotalElem.textContent = "BG??";
+        return;
+    }
+
     const correctionElem = document.getElementById('correctionselector');
     let correction = corrections[correctionElem.options.selectedIndex];
+    console.log("Selected correction: %s", JSON.stringify(correction));
 
     let correctionDose = (bloodGlucose - correction.target) / correction.factor;
-
-    const correctionTotalElem = document.getElementById('correctiontotal');
     correctionTotalElem.textContent = correctionDose.toFixed(3);
 }
 
