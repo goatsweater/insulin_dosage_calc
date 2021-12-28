@@ -234,6 +234,62 @@ function loadMealSelection() {
 
 }
 
+function dataManagementMealListLoader() {
+    let meals = JSON.parse(localStorage.getItem('meals'));
+    // Exit if there is nothing to do
+    if (meals == null) { return; }
+
+    // Load the list group with saved meals
+    const datamgmtmeallistElem = document.getElementById('datamgmtmeallist');
+    datamgmtmeallistElem.innerHTML = "";
+    meals.forEach(meal => {
+        // Create an <li> to hold the items
+        const listItem = document.createElement('li');
+        listItem.className = 'list-group-item';
+
+        // Create a checkbox to aide selections
+        const checkboxElem = document.createElement('input');
+        checkboxElem.className = 'form-check-input me-1';
+        checkboxElem.type = 'checkbox';
+        checkboxElem.value = meals.indexOf(meal);
+        listItem.appendChild(checkboxElem);
+
+        // Add the meal name
+        listItem.appendChild(document.createTextNode(meal.name));
+
+        // Add the list item to the group
+        datamgmtmeallistElem.appendChild(listItem);
+    });
+}
+
+function dataManagementCorrListLoader() {
+    let corrections = JSON.parse(localStorage.getItem('corrections'));
+    // Exit if there is nothing to do
+    if (corrections == null) { return; }
+
+    // Load the list group with saved meals
+    const datamgmtmeallistElem = document.getElementById('datamgmtcorrlist');
+    datamgmtmeallistElem.innerHTML = "";
+    corrections.forEach(correction => {
+        // Create an <li> to hold the items
+        const listItem = document.createElement('li');
+        listItem.className = 'list-group-item';
+
+        // Create a checkbox to aide selections
+        const checkboxElem = document.createElement('input');
+        checkboxElem.className = 'form-check-input me-1';
+        checkboxElem.type = 'checkbox';
+        checkboxElem.value = corrections.indexOf(correction);
+        listItem.appendChild(checkboxElem);
+
+        // Add the meal name
+        listItem.appendChild(document.createTextNode(correction.name));
+
+        // Add the list item to the group
+        datamgmtmeallistElem.appendChild(listItem);
+    });
+}
+
 function loadCorrectionSelection() {
     let corrections = JSON.parse(localStorage.getItem('corrections'));
     // Exit if nothing to do
@@ -299,6 +355,43 @@ function saveNewCorrectionFactor() {
     loadCorrectionSelection();
 }
 
+function dataMgmtDeleteSelected() {
+    const mealList = document.getElementById('datamgmtmeallist');
+    let meals = JSON.parse(localStorage.getItem('meals'));
+
+    const corrList = document.getElementById('datamgmtcorrlist');
+    let corrections = JSON.parse(localStorage.getItem('corrections'));
+
+    const mealInputs = mealList.getElementsByTagName('input');
+    const correctionInputs = corrList.getElementsByTagName('input');
+
+    // Iterate through the meal checkboxes and look for ones to keep
+    let newMeals = [];
+    Array.from(mealInputs).forEach(item => {
+        if (!item.checked) {
+            newMeals.push(meals[item.value]);
+            console.log("Keeping %s", JSON.stringify(item));
+        }
+    });
+
+    // Iteration throug the correction checkboxes and look for ones to keep
+    let newCorrections = [];
+    Array.from(correctionInputs).forEach(item => {
+        if (!item.checked) {
+            newCorrections.push(corrections[item.value]);
+            console.log("Keeping %s", JSON.stringify(item));
+        }
+    });
+
+    // Save the results
+    localStorage.setItem('meals', JSON.stringify(newMeals));
+    localStorage.setItem('corrections', JSON.stringify(newCorrections));
+
+    // Reload the lists
+    dataManagementMealListLoader();
+    dataManagementCorrListLoader();
+}
+
 
 // Add event listeners to buttons.
 let newFoodItemButton = document.getElementById('addfooditem');
@@ -317,3 +410,19 @@ let mealSaveButton = document.getElementById('savemealbutton');
 mealSaveButton.addEventListener('click', saveNewMeal);
 window.addEventListener('load', loadMealSelection);
 window.addEventListener('load', loadCorrectionSelection);
+
+let datamgmtModal = document.getElementById('dataManagement');
+datamgmtModal.addEventListener('show.bs.modal', function(event) {
+    console.log("Fetching data from local storage.");
+    // Load the meal list
+    dataManagementMealListLoader();
+    // Load the correction list
+    dataManagementCorrListLoader();
+});
+datamgmtModal.addEventListener('hide.bs.modal', function(event) {
+    console.log("Data mgmt modal hiding. Reloading select lists.");
+    loadMealSelection();
+    loadCorrectionSelection();
+});
+let dataMgmtButton = document.getElementById('datamgmtdelete');
+dataMgmtButton.addEventListener('click', dataMgmtDeleteSelected);

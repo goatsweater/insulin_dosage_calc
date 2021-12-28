@@ -18,7 +18,34 @@
             <a href="/" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-dark text-decoration-none">
             <span class="fs-4">Insulin Calculator</span>
             </a>
+
+            <ul class="nav nav-pills">
+                <li class="nav-item"><button type="button" class="nav-link active" data-bs-toggle="modal" data-bs-target="#dataManagement">Manage Data</button></li>
+              </ul>
         </header>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="dataManagement" tabindex="-1" aria-labelledby="dataManagementModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+            <h1 class="modal-title" id="dataManagementModalLabel">Data Management</h1>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+            <h3>Meals</h3>
+            <ul class="list-group" id="datamgmtmeallist">
+            </ul>
+            <h3>Corrections</h3>
+            <ul class="list-group" id="datamgmtcorrlist">
+            </ul>
+            </div>
+            <div class="modal-footer">
+            <button type="button" class="btn btn-primary" id="datamgmtdelete">Delete selected</button>
+            </div>
+        </div>
+        </div>
     </div>
 
     <div class="container mb-2">
