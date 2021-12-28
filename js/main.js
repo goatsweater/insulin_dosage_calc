@@ -86,6 +86,9 @@ function createFoodItem() {
             // Close the accordion for the user
             let bsCollapse = new bootstrap.Collapse(itemContent, { hide: true });
 
+            // Don't reload the page
+            event.preventDefault();
+
             // Calculate the total carbs for the meal
             calculateTotalCarbs();
         }
@@ -193,11 +196,12 @@ function calculateDosageRatio() {
 
 
 function calculateCorrectionFactor() {
+    let corrections = JSON.parse(localStorage.getItem('corrections'));
     const bloodGlucose = document.getElementById('glucosereading').valueAsNumber;
     const correctionElem = document.getElementById('correctionselector');
-    let correction = Number(correctionElem.options[correctionElem.options.selectedIndex].value);
+    let correction = corrections[correctionElem.options.selectedIndex];
 
-    let correctionDose = bloodGlucose - correction;
+    let correctionDose = (bloodGlucose - correction.target) / correction.factor;
 
     const correctionTotalElem = document.getElementById('correctiontotal');
     correctionTotalElem.textContent = correctionDose.toFixed(3);
@@ -233,7 +237,7 @@ function loadCorrectionSelection() {
 
     corrections.forEach(correction => {
         let correctionOption = document.createElement("option");
-        correctionOption.text = `${ correction.name }[BG - (${ correction.target } / ${correction.factor})]`;
+        correctionOption.text = `${ correction.name } - (BG - ${ correction.target }) / ${correction.factor}`;
         correctionOption.value = correction.result;
         correctionSelectionElem.add(correctionOption);
     });
@@ -275,8 +279,7 @@ function saveNewCorrectionFactor() {
     let correction = {
         "name": document.getElementById('formulaName').value,
         "target": target,
-        "factor": factor,
-        "result": target / factor
+        "factor": factor
     };
     console.log("Correction factor: %s", JSON.stringify(correction));
     corrections.push(correction);
