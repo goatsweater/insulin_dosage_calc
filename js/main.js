@@ -128,6 +128,7 @@ function createInputElement(labelString, placeholderText, idValue, controlType =
     inputControl.id = idValue;
     inputControl.placeholder = placeholderText;
     inputControl.required = true;
+    inputControl.step = "0.01";
 
     inputContainer.appendChild(inputLabel);
     if (suffix == "") {
